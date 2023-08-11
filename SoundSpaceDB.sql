@@ -9,40 +9,40 @@ GO
 -- Kreiranje Tabela
 
 CREATE TABLE Uloge(
-	id_uloge INT PRIMARY KEY NOT NULL IDENTITY(1,1),
-	ime_uloge NVARCHAR(45) NOT NULL,
+	id_uloge INT PRIMARY KEY  NOT NULL IDENTITY(1,1),
+	ime_uloge NVARCHAR(45)  NOT NULL,
 );
 
 CREATE TABLE Korisnici(
-	id_korisnika INT PRIMARY KEY NOT NULL IDENTITY(1,1),
-	id_uloge INT DEFAULT 1 NOT NULL,
-	ime_korisnika NVARCHAR(45) NOT NULL,
-	prezime_korisnika NVARCHAR(45) NOT NULL,
-	prikazno_ime_korisnika NVARCHAR(45) NOT NULL,
-	email_korisnika NVARCHAR(45) NOT NULL,
-	lozinka_korisnika NVARCHAR(45) NOT NULL,
+	id_korisnika INT PRIMARY KEY  NOT NULL IDENTITY(1,1),
+	id_uloge INT DEFAULT 1  NOT NULL,
+	ime_korisnika NVARCHAR(45)  NOT NULL,
+	prezime_korisnika NVARCHAR(45)  NOT NULL,
+	prikazno_ime_korisnika NVARCHAR(45)  NOT NULL,
+	email_korisnika NVARCHAR(45)  NOT NULL,
+	lozinka_korisnika NVARCHAR(45)  NOT NULL,
 	slika_korisnika NVARCHAR(255),
 	FOREIGN KEY (id_uloge) REFERENCES Uloge(id_uloge)
 );
 
 CREATE TABLE Umetnici(
-	id_umetnika INT PRIMARY KEY NOT NULL IDENTITY(1,1),
-	id_korisnika INT NOT NULL,
-	ime_umetnika NVARCHAR(45) NOT NULL,
+	id_umetnika INT PRIMARY KEY  NOT NULL IDENTITY(1,1),
+	id_korisnika INT  NOT NULL,
+	ime_umetnika NVARCHAR(45)  NOT NULL,
 	FOREIGN KEY (id_korisnika) REFERENCES Korisnici (id_korisnika),
 );
 
 CREATE TABLE Zanrovi(
-	id_zanra INT PRIMARY KEY NOT NULL IDENTITY(1,1),
-	naziv_zanra NVARCHAR(45) NOT NULL,
+	id_zanra INT PRIMARY KEY  NOT NULL IDENTITY(1,1),
+	naziv_zanra NVARCHAR(45)  NOT NULL,
 );
 
 CREATE TABLE Albumi(
-	id_albuma INT PRIMARY KEY NOT NULL IDENTITY(1,1),
-	id_umetnika INT NOT NULL,
-	naziv_albuma NVARCHAR(45) NOT NULL,
+	id_albuma INT PRIMARY KEY  NOT NULL IDENTITY(1,1),
+	id_umetnika INT  NOT NULL,
+	naziv_albuma NVARCHAR(45)  NOT NULL,
 	datum_kreiranja_albuma DATETIME2(0) DEFAULT GETDATE(),
-	slika_albuma NVARCHAR(255) NOT NULL,
+	slika_albuma NVARCHAR(255)  NOT NULL,
 	trajanje_albuma TIME(0),
 	obrisan_album TINYINT DEFAULT 0,
 	vidljivost_albuma TINYINT DEFAULT 1,
@@ -51,25 +51,25 @@ CREATE TABLE Albumi(
 );
 
 CREATE TABLE Numere(
-	id_numere INT PRIMARY KEY NOT NULL IDENTITY(1,1),
-	id_umetnika INT NOT NULL,
-	id_zanra INT NOT NULL,
-	id_albuma INT NOT NULL,
-	naziv_numere NVARCHAR(45) NOT NULL,
-	trajanje_numere TIME(0) NOT NULL,
+	id_numere INT PRIMARY KEY  NOT NULL IDENTITY(1,1),
+	id_umetnika INT  NOT NULL,
+	id_zanra INT  NOT NULL,
+	id_albuma INT  NOT NULL,
+	naziv_numere NVARCHAR(45)  NOT NULL,
+	trajanje_numere TIME(0)  NOT NULL,
 	datum_kreiranja_numere DATETIME2(0) DEFAULT GETDATE(),
 	obrisana_numera TINYINT DEFAULT 0,
 	vidljivost_numere TINYINT DEFAULT 1,
-    lokacija_numere NVARCHAR(255) NOT NULL,
+    lokacija_numere NVARCHAR(255)  NOT NULL,
 
 	FOREIGN KEY (id_zanra) REFERENCES Zanrovi(id_zanra),
 	FOREIGN KEY (id_albuma) REFERENCES Albumi(id_albuma),
 );
 
 CREATE TABLE Plejliste(
-	id_plejliste INT PRIMARY KEY NOT NULL IDENTITY(1,1),
-	id_korisnika INT NOT NULL,
-	naziv_plejliste NVARCHAR(45) NOT NULL,
+	id_plejliste INT PRIMARY KEY  NOT NULL IDENTITY(1,1),
+	id_korisnika INT  NOT NULL,
+	naziv_plejliste NVARCHAR(45)  NOT NULL,
 	trajanje_plejliste TIME(0),
 	obrisana_plejlista TINYINT DEFAULT 0,
 	vidljivost_plejliste TINYINT DEFAULT 1
@@ -78,9 +78,9 @@ CREATE TABLE Plejliste(
 );
 
 CREATE TABLE Istorija(
-	id_istorije INT PRIMARY KEY NOT NULL IDENTITY(1,1),
-	id_korisnika INT NOT NULL,
-	id_numere INT NOT NULL,
+	id_istorije INT PRIMARY KEY  NOT NULL IDENTITY(1,1),
+	id_korisnika INT  NOT NULL,
+	id_numere INT  NOT NULL,
 	datum_slusanja DATETIME2(0) DEFAULT GETDATE(),
 
 	FOREIGN KEY (id_korisnika) REFERENCES Korisnici (id_korisnika),
@@ -89,21 +89,21 @@ CREATE TABLE Istorija(
 );
 
 CREATE TABLE Tekst(
-	id_teksta INT PRIMARY KEY NOT NULL IDENTITY(1,1),
-	id_numere INT NOT NULL,
-	vreme_prikazivanja_teksta TIME(0) NOT NULL,
-	linija_teksta NVARCHAR(255) NOT NULL,
+	id_teksta INT PRIMARY KEY  NOT NULL IDENTITY(1,1),
+	id_numere INT  NOT NULL,
+	vreme_prikazivanja_teksta TIME(0)  NOT NULL,
+	linija_teksta NVARCHAR(255)  NOT NULL,
 
 	FOREIGN KEY (id_numere) REFERENCES Numere (id_numere)
 );
 
 CREATE TABLE Interakcije_Korisnika(
-	id_interakcije INT PRIMARY KEY NOT NULL IDENTITY(1,1),
-	id_korisnika INT NOT NULL,
-	id_numere INT NOT NULL,
-	broj_slusanja INT,
-	broj_pustanja INT NOT NULL,
-	provedeno_vreme_slusanja TIME(0),
+	id_interakcije INT PRIMARY KEY  NOT NULL IDENTITY(1,1),
+	id_korisnika INT  NOT NULL,
+	id_numere INT  NOT NULL,
+	broj_slusanja INT DEFAULT 0,
+	broj_pustanja INT  NOT NULL DEFAULT 1,
+	provedeno_vreme_slusanja TIME(0) DEFAULT '00:00:00',
 	dodato_u_omiljeno TINYINT DEFAULT 0,
     zaustavljeno_vreme TIME(0),
 
@@ -112,9 +112,9 @@ CREATE TABLE Interakcije_Korisnika(
 );
 
 CREATE TABLE Numera_Plejlista(
-	id_plejliste INT NOT NULL,
-	id_numere INT NOT NULL,
-    id_albuma INT NOT NULL,
+	id_plejliste INT  NOT NULL,
+	id_numere INT  NOT NULL,
+    id_albuma INT  NOT NULL,
 	vreme_dodavanja DATETIME2(0) DEFAULT GETDATE(),
 
 	FOREIGN KEY (id_numere) REFERENCES Numere (id_numere),
@@ -150,10 +150,10 @@ VALUES (1, 1, 3, 'Nova Numera', '00:02:35', 'Numere/NovaNumera.mp3');
 INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '00:00:02', 'Linija teksta 1');
 INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '00:00:04', 'Linija teksta 2');
 INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '00:00:06', 'Linija teksta 3');
-INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '00:00:08', 'instrumental');
+INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '00:00:08', 'muzika');
 INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '00:00:15', 'Linija teksta 4');
 INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '00:00:20', 'Linija teksta 5');
-INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '00:01:02', 'instrumental');
+INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '00:01:02', 'muzika');
 INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '00:02:15', 'Linija teksta 6');
 INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '00:02:25', 'Linija teksta 7');
 
@@ -225,6 +225,403 @@ Numere.trajanje_numere, Numere.datum_kreiranja_numere, Numere.lokacija_numere, A
 FROM Numera_Plejlista JOIN Numere ON Numera_Plejlista.id_numere = Numere.id_numere JOIN Albumi ON Numera_Plejlista.id_albuma = Albumi.id_albuma JOIN Plejliste ON Numera_Plejlista.id_plejliste = Plejliste.id_plejliste
 GO
 
+-- Procedure
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--======================================================
+-- Autor: Momcilo Nikolic
+-- Datum kreiranja: 11.8.2023.
+-- Deskripcija: Procedura za kreiranje novih korisnika
+--======================================================
+
+CREATE PROCEDURE InsertujKorisnika
+	@imeKorisnika NVARCHAR(45),
+	@prezimeKorisnika NVARCHAR(45),
+	@prikaznoImeKorisnika NVARCHAR(45),
+	@emailKorisnika NVARCHAR(45),
+	@lozinkaKorisnika NVARCHAR(45)
+AS
+BEGIN
+	SET NOCOUNT ON;
+BEGIN TRY
+	DECLARE @mejlPostoji BIT = 0;
+	
+	SELECT @mejlPostoji = 1 FROM Korisnici
+	WHERE email_korisnika = @emailKorisnika
+
+	IF(@mejlPostoji = 1)
+	BEGIN
+		RAISERROR('Korisnicki email vec postoji!', 16, 1);
+	END
+
+	INSERT INTO Korisnici (ime_korisnika, prezime_korisnika, prikazno_ime_korisnika, email_korisnika, lozinka_korisnika)
+	VALUES (@imeKorisnika, @prezimeKorisnika, @prikaznoImeKorisnika, @emailKorisnika, @lozinkaKorisnika);
+END TRY
+BEGIN CATCH
+	DECLARE @ErrorMessage NVARCHAR(2000);
+	DECLARE @ErrorSeverity INT;
+	DECLARE @ErrorState INT;
+
+	SELECT
+		@ErrorMessage = ERROR_MESSAGE(),
+		@ErrorSeverity = ERROR_SEVERITY(),
+		@ErrorState = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+END
+GO
+
+-- Procedure za Interakciju Korisnika -----------------------------------------------
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--=============================================================================
+-- Autor: Momcilo Nikolic
+-- Datum kreiranja: 11.8.2023.
+-- Deskripcija: Procedura za kreiranje ili apdejtovanje korisnicke interakcije pustanja
+--=============================================================================
+
+CREATE PROCEDURE InterakcijaPustanja
+	@idKorisnika INT,
+	@idNumere INT
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+BEGIN TRY
+	DECLARE @korisnikPostoji BIT = 0;
+	DECLARE @numeraPostoji BIT = 0;
+
+	SELECT @korisnikPostoji = 1 FROM Korisnici
+	WHERE id_korisnika = @idKorisnika
+
+	IF(@korisnikPostoji = 0)
+	BEGIN
+    	RAISERROR('Korisnik ne postoji!', 16, 1);
+	END
+
+	SELECT @numeraPostoji = 1 FROM Numere
+	WHERE id_numere = @idNumere
+
+	IF(@numeraPostoji = 0)
+	BEGIN
+    	RAISERROR('Numera ne postoji!', 16, 1);
+	END
+
+	DECLARE @tabelaPostoji BIT = 0;
+
+	SELECT @tabelaPostoji = 1 FROM Interakcije_Korisnika
+	WHERE id_korisnika = @idKorisnika AND id_numere = @idNumere
+
+	IF(@tabelaPostoji = 1)
+	BEGIN
+		UPDATE Interakcije_Korisnika
+		SET broj_pustanja = broj_pustanja + 1
+		WHERE id_korisnika = @idKorisnika AND id_numere = @idNumere;
+	END
+	ELSE
+	BEGIN
+		INSERT INTO Interakcije_Korisnika (id_korisnika, id_numere, broj_pustanja)
+    	VALUES (@idKorisnika, @idNumere, 1);
+	END
+
+END TRY
+BEGIN CATCH
+	DECLARE @ErrorMessage NVARCHAR(2000);
+	DECLARE @ErrorSeverity INT;
+	DECLARE @ErrorState INT;
+
+	SELECT
+		@ErrorMessage = ERROR_MESSAGE(),
+		@ErrorSeverity = ERROR_SEVERITY(),
+		@ErrorState = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+END
+GO
 
 
 
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--=============================================================================
+-- Autor: Momcilo Nikolic
+-- Datum kreiranja: 11.8.2023.
+-- Deskripcija: Procedura za apdejtovanje korisnicke interakcije slusanja
+--=============================================================================
+
+CREATE PROCEDURE InterakcijaSlusanja
+	@idKorisnika INT,
+	@idNumere INT
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+BEGIN TRY
+	DECLARE @korisnikPostoji BIT = 0;
+	DECLARE @numeraPostoji BIT = 0;
+
+	SELECT @korisnikPostoji = 1 FROM Korisnici
+	WHERE id_korisnika = @idKorisnika
+
+	IF(@korisnikPostoji = 0)
+	BEGIN
+    	RAISERROR('Korisnik ne postoji!', 16, 1);
+	END
+
+	SELECT @numeraPostoji = 1 FROM Numere
+	WHERE id_numere = @idNumere
+
+	IF(@numeraPostoji = 0)
+	BEGIN
+    	RAISERROR('Numera ne postoji!', 16, 1);
+	END
+
+	DECLARE @tabelaPostoji BIT = 0;
+
+	SELECT @tabelaPostoji = 1 FROM Interakcije_Korisnika
+	WHERE id_korisnika = @idKorisnika AND id_numere = @idNumere
+
+	IF(@tabelaPostoji = 1)
+	BEGIN
+		UPDATE Interakcije_Korisnika
+		SET broj_slusanja = broj_slusanja + 1
+		WHERE id_korisnika = @idKorisnika AND id_numere = @idNumere;
+	END	
+
+END TRY
+BEGIN CATCH
+	DECLARE @ErrorMessage NVARCHAR(2000);
+	DECLARE @ErrorSeverity INT;
+	DECLARE @ErrorState INT;
+
+	SELECT
+		@ErrorMessage = ERROR_MESSAGE(),
+		@ErrorSeverity = ERROR_SEVERITY(),
+		@ErrorState = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+END
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--=============================================================================
+-- Autor: Momcilo Nikolic
+-- Datum kreiranja: 11.8.2023.
+-- Deskripcija: Procedura za apdejtovanje korisnicke interakcije provedeno vreme sludanja
+--=============================================================================
+
+CREATE PROCEDURE InterakcijaProvedenoVremeSlusanja
+	@idKorisnika INT,
+	@idNumere INT,
+	@provedenoVremeUSekundama INT
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+BEGIN TRY
+	DECLARE @korisnikPostoji BIT = 0;
+	DECLARE @numeraPostoji BIT = 0;
+
+	SELECT @korisnikPostoji = 1 FROM Korisnici
+	WHERE id_korisnika = @idKorisnika
+
+	IF(@korisnikPostoji = 0)
+	BEGIN
+    	RAISERROR('Korisnik ne postoji!', 16, 1);
+	END
+
+	SELECT @numeraPostoji = 1 FROM Numere
+	WHERE id_numere = @idNumere
+
+	IF(@numeraPostoji = 0)
+	BEGIN
+    	RAISERROR('Numera ne postoji!', 16, 1);
+	END
+
+	DECLARE @tabelaPostoji BIT = 0;
+
+	SELECT @tabelaPostoji = 1 FROM Interakcije_Korisnika
+	WHERE id_korisnika = @idKorisnika AND id_numere = @idNumere
+
+	IF(@tabelaPostoji = 1)
+	BEGIN
+		UPDATE Interakcije_Korisnika
+		SET provedeno_vreme_slusanja = DATEADD(SECOND, @provedenoVremeUSekundama, provedeno_vreme_slusanja)
+		WHERE id_korisnika = @idKorisnika AND id_numere = @idNumere;
+	END	
+
+END TRY
+BEGIN CATCH
+	DECLARE @ErrorMessage NVARCHAR(2000);
+	DECLARE @ErrorSeverity INT;
+	DECLARE @ErrorState INT;
+
+	SELECT
+		@ErrorMessage = ERROR_MESSAGE(),
+		@ErrorSeverity = ERROR_SEVERITY(),
+		@ErrorState = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+END
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--=================================================================================================
+-- Autor: Momcilo Nikolic
+-- Datum kreiranja: 11.8.2023.
+-- Deskripcija: Procedura za kreiranje ili apdejtovanje korisnicke interakcije dovavanja u omiljeno
+--=================================================================================================
+
+CREATE PROCEDURE InterakcijaOmiljeno
+	@idKorisnika INT,
+	@idNumere INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+BEGIN TRY
+	DECLARE @korisnikPostoji BIT = 0;
+	DECLARE @numeraPostoji BIT = 0;
+
+	SELECT @korisnikPostoji = 1 FROM Korisnici
+	WHERE id_korisnika = @idKorisnika
+
+	IF(@korisnikPostoji = 0)
+	BEGIN
+    	RAISERROR('Korisnik ne postoji!', 16, 1);
+	END
+
+	SELECT @numeraPostoji = 1 FROM Numere
+	WHERE id_numere = @idNumere
+
+	IF(@numeraPostoji = 0)
+	BEGIN
+    	RAISERROR('Numera ne postoji!', 16, 1);
+	END
+
+	DECLARE @tabelaPostoji BIT = 0;
+
+	SELECT @tabelaPostoji = 1 FROM Interakcije_Korisnika
+	WHERE id_korisnika = @idKorisnika AND id_numere = @idNumere
+
+	IF(@tabelaPostoji = 1)
+	BEGIN
+		UPDATE Interakcije_Korisnika
+		SET dodato_u_omiljeno =  CASE WHEN dodato_u_omiljeno = 0 THEN 1 ELSE 0 END
+		WHERE id_korisnika = @idKorisnika AND id_numere = @idNumere;
+	END
+	ELSE
+	BEGIN
+		INSERT INTO Interakcije_Korisnika (id_korisnika, id_numere)
+    	VALUES (@idKorisnika, @idNumere);
+
+		UPDATE Interakcije_Korisnika
+		SET dodato_u_omiljeno =  CASE WHEN dodato_u_omiljeno = 0 THEN 1 ELSE 0 END
+		WHERE id_korisnika = @idKorisnika AND id_numere = @idNumere;
+	END
+
+END TRY
+BEGIN CATCH
+	DECLARE @ErrorMessage NVARCHAR(2000);
+	DECLARE @ErrorSeverity INT;
+	DECLARE @ErrorState INT;
+
+	SELECT
+		@ErrorMessage = ERROR_MESSAGE(),
+		@ErrorSeverity = ERROR_SEVERITY(),
+		@ErrorState = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+END
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--=============================================================================
+-- Autor: Momcilo Nikolic
+-- Datum kreiranja: 11.8.2023.
+-- Deskripcija: Procedura za apdejtovanje korisnicke interakcije zaustavljeno vreme
+--=============================================================================
+
+CREATE PROCEDURE InterakcijaZaustavljenoVreme
+	@idKorisnika INT,
+	@idNumere INT,
+	@pauziranoVreme TIME(0)
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+BEGIN TRY
+	DECLARE @korisnikPostoji BIT = 0;
+	DECLARE @numeraPostoji BIT = 0;
+
+	SELECT @korisnikPostoji = 1 FROM Korisnici
+	WHERE id_korisnika = @idKorisnika
+
+	IF(@korisnikPostoji = 0)
+	BEGIN
+    	RAISERROR('Korisnik ne postoji!', 16, 1);
+	END
+
+	SELECT @numeraPostoji = 1 FROM Numere
+	WHERE id_numere = @idNumere
+
+	IF(@numeraPostoji = 0)
+	BEGIN
+    	RAISERROR('Numera ne postoji!', 16, 1);
+	END
+
+	DECLARE @tabelaPostoji BIT = 0;
+
+	SELECT @tabelaPostoji = 1 FROM Interakcije_Korisnika
+	WHERE id_korisnika = @idKorisnika AND id_numere = @idNumere
+
+	IF(@tabelaPostoji = 1)
+	BEGIN
+		UPDATE Interakcije_Korisnika
+		SET zaustavljeno_vreme = @pauziranoVreme
+		WHERE id_korisnika = @idKorisnika AND id_numere = @idNumere;
+	END	
+	
+
+END TRY
+BEGIN CATCH
+	DECLARE @ErrorMessage NVARCHAR(2000);
+	DECLARE @ErrorSeverity INT;
+	DECLARE @ErrorState INT;
+
+	SELECT
+		@ErrorMessage = ERROR_MESSAGE(),
+		@ErrorSeverity = ERROR_SEVERITY(),
+		@ErrorState = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+END
+GO
