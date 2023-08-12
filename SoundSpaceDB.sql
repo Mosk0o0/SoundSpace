@@ -92,7 +92,7 @@ CREATE TABLE Tekst(
 	id_teksta INT PRIMARY KEY  NOT NULL IDENTITY(1,1),
 	id_numere INT  NOT NULL,
 	vreme_prikazivanja_teksta TIME(0)  NOT NULL,
-	linija_teksta NVARCHAR(255)  NOT NULL,
+	linija_teksta NVARCHAR(200)  NOT NULL,
 
 	FOREIGN KEY (id_numere) REFERENCES Numere (id_numere)
 );
@@ -194,7 +194,7 @@ FROM Albumi JOIN Umetnici ON Albumi.id_umetnika = Umetnici.id_umetnika
 GO
 
 CREATE VIEW pogled_Numere AS
-SELECT Numere.id_numere, Albumi.id_albuma, Umetnici.id_umetnika, Zanrovi.id_zanra, Numere.naziv_numere, Numere.trajanje_numere, Numere.datum_kreiranja_numere, Numere.vidljivost_numere, Numere.lokacija_numere, Zanrovi.naziv_zanra, Umetnici.ime_umetnika
+SELECT Numere.id_numere, Albumi.id_albuma, Umetnici.id_umetnika, Zanrovi.id_zanra, Numere.naziv_numere, Numere.trajanje_numere, Numere.datum_kreiranja_numere, Numere.vidljivost_numere, Numere.obrisana_numera, Numere.lokacija_numere, Zanrovi.naziv_zanra, Umetnici.ime_umetnika
 FROM Numere JOIN Albumi ON Numere.id_albuma = Albumi.id_albuma JOIN Umetnici ON Numere.id_umetnika = Umetnici.id_umetnika JOIN Zanrovi ON Numere.id_zanra = Zanrovi.id_zanra
 GO
 
@@ -214,7 +214,7 @@ GO
 
 CREATE VIEW pogled_Interakcije_Korisnika AS
 SELECT Interakcije_Korisnika.id_interakcije, Interakcije_Korisnika.id_korisnika, Interakcije_Korisnika.id_numere, 
-Interakcije_Korisnika.broj_slusanja, Interakcije_Korisnika.provedeno_vreme_slusanja, Interakcije_Korisnika.dodato_u_omiljeno, 
+Interakcije_Korisnika.broj_slusanja, Interakcije_Korisnika.broj_pustanja, Interakcije_Korisnika.provedeno_vreme_slusanja, Interakcije_Korisnika.dodato_u_omiljeno, 
 Interakcije_Korisnika.zaustavljeno_vreme, Korisnici.prikazno_ime_korisnika, Numere.naziv_numere
 FROM Interakcije_Korisnika JOIN Korisnici ON Interakcije_Korisnika.id_korisnika = Korisnici.id_korisnika JOIN Numere ON Interakcije_Korisnika.id_numere = Numere.id_numere
 GO
@@ -224,6 +224,8 @@ SELECT Numera_Plejlista.id_numere, Numera_Plejlista.id_plejliste, Numera_Plejlis
 Numere.trajanje_numere, Numere.datum_kreiranja_numere, Numere.lokacija_numere, Albumi.slika_albuma  
 FROM Numera_Plejlista JOIN Numere ON Numera_Plejlista.id_numere = Numere.id_numere JOIN Albumi ON Numera_Plejlista.id_albuma = Albumi.id_albuma JOIN Plejliste ON Numera_Plejlista.id_plejliste = Plejliste.id_plejliste
 GO
+
+
 
 -- Procedure
 
@@ -260,6 +262,359 @@ BEGIN TRY
 
 	INSERT INTO Korisnici (ime_korisnika, prezime_korisnika, prikazno_ime_korisnika, email_korisnika, lozinka_korisnika)
 	VALUES (@imeKorisnika, @prezimeKorisnika, @prikaznoImeKorisnika, @emailKorisnika, @lozinkaKorisnika);
+END TRY
+BEGIN CATCH
+	DECLARE @ErrorMessage NVARCHAR(2000);
+	DECLARE @ErrorSeverity INT;
+	DECLARE @ErrorState INT;
+
+	SELECT
+		@ErrorMessage = ERROR_MESSAGE(),
+		@ErrorSeverity = ERROR_SEVERITY(),
+		@ErrorState = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+END
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--======================================================
+-- Autor: Momcilo Nikolic
+-- Datum kreiranja: 12.8.2023.
+-- Deskripcija: Procedura za kreiranje novih linija tekstova
+--======================================================
+
+CREATE PROCEDURE InsertujTekst
+	@idNumere INT,
+	@vremePrikazivanja Time(0),
+	@linijaTeksta NVARCHAR(255)
+	
+AS
+BEGIN
+	SET NOCOUNT ON;
+BEGIN TRY
+	DECLARE @vremePrikazivanjaPostoji BIT = 0;
+	
+	SELECT @vremePrikazivanjaPostoji = 1 FROM Tekst
+	WHERE id_numere = @idNumere AND vreme_prikazivanja_teksta = @vremePrikazivanja
+
+	IF(@vremePrikazivanjaPostoji = 1)
+	BEGIN
+		RAISERROR('Linija sa navedenim vremenom prikazivanja vec postoji!', 16, 1);
+	END
+
+	INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta)
+	VALUES (@idNumere, @vremePrikazivanja, @linijaTeksta);
+END TRY
+BEGIN CATCH
+	DECLARE @ErrorMessage NVARCHAR(2000);
+	DECLARE @ErrorSeverity INT;
+	DECLARE @ErrorState INT;
+
+	SELECT
+		@ErrorMessage = ERROR_MESSAGE(),
+		@ErrorSeverity = ERROR_SEVERITY(),
+		@ErrorState = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+END
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--======================================================
+-- Autor: Momcilo Nikolic
+-- Datum kreiranja: 11.8.2023.
+-- Deskripcija: Procedura za kreiranje novih umetnika
+--======================================================
+
+CREATE PROCEDURE InsertujUmetnika
+	@idKorisnika INT,
+	@imeUmetnika NVARCHAR(45),
+	
+AS
+BEGIN
+	SET NOCOUNT ON;
+BEGIN TRY
+	DECLARE @umetnikPostoji BIT = 0;
+	
+	SELECT @umetnikPostoji = 1 FROM Umetnici
+	WHERE id_korisnika = @idKorisnika
+
+	IF(@umetnikPostoji = 1)
+	BEGIN
+		RAISERROR('Umetnik vec postoji!', 16, 1);
+	END
+
+	INSERT INTO Umetnici (id_korisnika, ime_umetnika)
+	VALUES (@idKorisnika, @imeUmetnika);
+END TRY
+BEGIN CATCH
+	DECLARE @ErrorMessage NVARCHAR(2000);
+	DECLARE @ErrorSeverity INT;
+	DECLARE @ErrorState INT;
+
+	SELECT
+		@ErrorMessage = ERROR_MESSAGE(),
+		@ErrorSeverity = ERROR_SEVERITY(),
+		@ErrorState = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+END
+GO
+-- Procedure Albuma
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--======================================================
+-- Autor: Momcilo Nikolic
+-- Datum kreiranja: 12.8.2023.
+-- Deskripcija: Procedura za kreiranje albuma
+--======================================================
+
+CREATE PROCEDURE InsertujAlbum
+	@idUmetnika INT,
+	@nazivAlbuma NVARCHAR(45),
+	@slikaAlbuma NVARCHAR(255)
+	
+AS
+BEGIN
+	SET NOCOUNT ON;
+BEGIN TRY
+	INSERT INTO Albumi (id_umetnika, naziv_albuma, slika_albuma)
+	VALUES (@idUmetnika, @nazivAlbuma, @slikaAlbuma);
+END TRY
+BEGIN CATCH
+	DECLARE @ErrorMessage NVARCHAR(2000);
+	DECLARE @ErrorSeverity INT;
+	DECLARE @ErrorState INT;
+
+	SELECT
+		@ErrorMessage = ERROR_MESSAGE(),
+		@ErrorSeverity = ERROR_SEVERITY(),
+		@ErrorState = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+END
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--======================================================
+-- Autor: Momcilo Nikolic
+-- Datum kreiranja: 12.8.2023.
+-- Deskripcija: Procedura za promenu vidljivosti albuma 
+--======================================================
+
+CREATE PROCEDURE PromeniVidljivostAlbuma
+	@idAlbuma INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+BEGIN TRY
+	DECLARE @albumPostoji BIT = 0;
+
+	SELECT @albumPostoji = 1 FROM Albumi
+	WHERE id_albuma = @idAlbuma
+
+	IF(@albumPostoji = 1)
+	BEGIN
+		UPDATE Albumi
+		SET vidljivost_albuma =  CASE WHEN vidljivost_albuma = 0 THEN 1 ELSE 0 END
+		WHERE id_albuma = @idAlbuma
+	END
+END TRY
+BEGIN CATCH
+	DECLARE @ErrorMessage NVARCHAR(2000);
+	DECLARE @ErrorSeverity INT;
+	DECLARE @ErrorState INT;
+
+	SELECT
+		@ErrorMessage = ERROR_MESSAGE(),
+		@ErrorSeverity = ERROR_SEVERITY(),
+		@ErrorState = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+END
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--======================================================
+-- Autor: Momcilo Nikolic
+-- Datum kreiranja: 12.8.2023.
+-- Deskripcija: Procedura za postavljanje albuma kao izbrisan 
+--======================================================
+
+CREATE PROCEDURE PostaviAlbumKaoIzbrisan
+	@idAlbuma INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+BEGIN TRY
+	DECLARE @albumPostoji BIT = 0;
+
+	SELECT @albumPostoji = 1 FROM Albumi
+	WHERE id_albuma = @idAlbuma 
+
+	IF(@albumPostoji = 1)
+	BEGIN
+		UPDATE Albumi
+		SET obrisan_album = 1
+		WHERE id_albuma = @idAlbuma
+	END
+END TRY
+BEGIN CATCH
+	DECLARE @ErrorMessage NVARCHAR(2000);
+	DECLARE @ErrorSeverity INT;
+	DECLARE @ErrorState INT;
+
+	SELECT
+		@ErrorMessage = ERROR_MESSAGE(),
+		@ErrorSeverity = ERROR_SEVERITY(),
+		@ErrorState = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+END
+GO
+
+-- Procedure Numera
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--======================================================
+-- Autor: Momcilo Nikolic
+-- Datum kreiranja: 12.8.2023.
+-- Deskripcija: Procedura za kreiranje numere
+--======================================================
+
+CREATE PROCEDURE InsertujNumeru
+	@idUmetnika INT,
+	@idAlbuma INT,
+	@idZanra INT,
+	@nazivNumere NVARCHAR(45),
+	@trajanjeNumere TIME(0),
+	@lokacijaNumere NVARCHAR(255)
+	
+AS
+BEGIN
+	SET NOCOUNT ON;
+BEGIN TRY
+	INSERT INTO Numere (id_umetnika, id_albuma, id_zanra, naziv_numere, trajanje_numere, lokacija_numere)
+	VALUES (@idUmetnika, @idAlbuma, @idZanra, @nazivNumere, @trajanjeNumere, @lokacijaNumere);
+END TRY
+BEGIN CATCH
+	DECLARE @ErrorMessage NVARCHAR(2000);
+	DECLARE @ErrorSeverity INT;
+	DECLARE @ErrorState INT;
+
+	SELECT
+		@ErrorMessage = ERROR_MESSAGE(),
+		@ErrorSeverity = ERROR_SEVERITY(),
+		@ErrorState = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+END
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--======================================================
+-- Autor: Momcilo Nikolic
+-- Datum kreiranja: 12.8.2023.
+-- Deskripcija: Procedura za promenu vidljivosti numere 
+--======================================================
+
+CREATE PROCEDURE PromeniVidljivostNumere
+	@idNumere INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+BEGIN TRY
+	DECLARE @numeraPostoji BIT = 0;
+
+	SELECT @numeraPostoji = 1 FROM Numere
+	WHERE id_numere = @idNumere
+
+	IF(@numeraPostoji = 1)
+	BEGIN
+		UPDATE Numere
+		SET vidljivost_numere =  CASE WHEN vidljivost_numere = 0 THEN 1 ELSE 0 END
+		WHERE id_numere = @idNumere
+	END
+END TRY 
+BEGIN CATCH
+	DECLARE @ErrorMessage NVARCHAR(2000);
+	DECLARE @ErrorSeverity INT;
+	DECLARE @ErrorState INT;
+
+	SELECT
+		@ErrorMessage = ERROR_MESSAGE(),
+		@ErrorSeverity = ERROR_SEVERITY(),
+		@ErrorState = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+END
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--======================================================
+-- Autor: Momcilo Nikolic
+-- Datum kreiranja: 12.8.2023.
+-- Deskripcija: Procedura za postavljanje numere kao izbrisan 
+--======================================================
+
+CREATE PROCEDURE PostaviNumeruKaoIzbrisanu
+	@idNumere INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+BEGIN TRY
+	DECLARE @numeraPostoji BIT = 0;
+
+	SELECT @numeraPostoji = 1 FROM Numere
+	WHERE id_numere = @idNumere 
+
+	IF(@numeraPostoji = 1)
+	BEGIN
+		UPDATE Numere
+		SET obrisana_numera = 1
+		WHERE id_numere = @idNumere
+	END
 END TRY
 BEGIN CATCH
 	DECLARE @ErrorMessage NVARCHAR(2000);
@@ -326,6 +681,8 @@ BEGIN TRY
 		UPDATE Interakcije_Korisnika
 		SET broj_pustanja = broj_pustanja + 1
 		WHERE id_korisnika = @idKorisnika AND id_numere = @idNumere;
+
+		INSERT INTO Istorija (id_korisnika, id_numere) VALUES (@idKorisnika, @idNumere);
 	END
 	ELSE
 	BEGIN
