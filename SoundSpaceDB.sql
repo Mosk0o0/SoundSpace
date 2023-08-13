@@ -43,7 +43,7 @@ CREATE TABLE Albumi(
 	naziv_albuma NVARCHAR(45)  NOT NULL,
 	datum_kreiranja_albuma DATETIME2(0) DEFAULT GETDATE(),
 	slika_albuma NVARCHAR(255)  NOT NULL,
-	trajanje_albuma TIME(0),
+	trajanje_albuma INT,
 	obrisan_album TINYINT DEFAULT 0,
 	vidljivost_albuma TINYINT DEFAULT 1,
 
@@ -56,7 +56,7 @@ CREATE TABLE Numere(
 	id_zanra INT  NOT NULL,
 	id_albuma INT  NOT NULL,
 	naziv_numere NVARCHAR(45)  NOT NULL,
-	trajanje_numere TIME(0)  NOT NULL,
+	trajanje_numere INT  NOT NULL,
 	datum_kreiranja_numere DATETIME2(0) DEFAULT GETDATE(),
 	obrisana_numera TINYINT DEFAULT 0,
 	vidljivost_numere TINYINT DEFAULT 1,
@@ -70,7 +70,7 @@ CREATE TABLE Plejliste(
 	id_plejliste INT PRIMARY KEY  NOT NULL IDENTITY(1,1),
 	id_korisnika INT  NOT NULL,
 	naziv_plejliste NVARCHAR(45)  NOT NULL,
-	trajanje_plejliste TIME(0),
+	trajanje_plejliste INT,
 	obrisana_plejlista TINYINT DEFAULT 0,
 	vidljivost_plejliste TINYINT DEFAULT 1
 
@@ -91,7 +91,7 @@ CREATE TABLE Istorija(
 CREATE TABLE Tekst(
 	id_teksta INT PRIMARY KEY  NOT NULL IDENTITY(1,1),
 	id_numere INT  NOT NULL,
-	vreme_prikazivanja_teksta TIME(0)  NOT NULL,
+	vreme_prikazivanja_teksta INT NOT NULL,
 	linija_teksta NVARCHAR(200)  NOT NULL,
 
 	FOREIGN KEY (id_numere) REFERENCES Numere (id_numere)
@@ -103,9 +103,9 @@ CREATE TABLE Interakcije_Korisnika(
 	id_numere INT  NOT NULL,
 	broj_slusanja INT DEFAULT 0,
 	broj_pustanja INT  NOT NULL DEFAULT 1,
-	provedeno_vreme_slusanja TIME(0) DEFAULT '00:00:00',
+	provedeno_vreme_slusanja INT DEFAULT 0,
 	dodato_u_omiljeno TINYINT DEFAULT 0,
-    zaustavljeno_vreme TIME(0),
+    zaustavljeno_vreme INT,
 
 	FOREIGN KEY (id_korisnika) REFERENCES Korisnici (id_korisnika),
 	FOREIGN KEY (id_numere) REFERENCES Numere (id_numere)
@@ -145,27 +145,30 @@ INSERT INTO Albumi(id_umetnika, naziv_albuma, slika_albuma)
 VALUES (1, 'Novi Album', 'Slike/Slika1.png');
 
 INSERT INTO Numere (id_umetnika, id_albuma, id_zanra, naziv_numere, trajanje_numere, lokacija_numere)
-VALUES (1, 1, 3, 'Nova Numera', '00:02:35', 'Numere/NovaNumera.mp3');
+VALUES (1, 1, 3, 'Nova Numera', '155', 'Numere/NovaNumera.mp3');
+INSERT INTO Numere (id_umetnika, id_albuma, id_zanra, naziv_numere, trajanje_numere, lokacija_numere)
+VALUES (1, 1, 2, 'Nova Numera2', '268', 'Numere/NovaNumera2.mp3');
 
-INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '00:00:02', 'Linija teksta 1');
-INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '00:00:04', 'Linija teksta 2');
-INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '00:00:06', 'Linija teksta 3');
-INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '00:00:08', 'muzika');
-INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '00:00:15', 'Linija teksta 4');
-INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '00:00:20', 'Linija teksta 5');
-INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '00:01:02', 'muzika');
-INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '00:02:15', 'Linija teksta 6');
-INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '00:02:25', 'Linija teksta 7');
+INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '2', 'Linija teksta 1');
+INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '4', 'Linija teksta 2');
+INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '6', 'Linija teksta 3');
+INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '8', 'muzika');
+INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '15', 'Linija teksta 4');
+INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '20', 'Linija teksta 5');
+INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '62', 'muzika');
+INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '75', 'Linija teksta 6');
+INSERT INTO Tekst (id_numere, vreme_prikazivanja_teksta, linija_teksta) VALUES (1, '145', 'Linija teksta 7');
 
 INSERT INTO Istorija (id_korisnika, id_numere) VALUES (1, 1);
 
 INSERT INTO Interakcije_Korisnika (id_korisnika, id_numere, broj_slusanja, broj_pustanja, provedeno_vreme_slusanja, dodato_u_omiljeno, zaustavljeno_vreme)
-VALUES (1, 1, 50, 25, '01:35:28', 1, '00:01:20');
+VALUES (1, 1, 50, 25, '800', 1, '80');
 
 INSERT INTO Plejliste (id_korisnika, naziv_plejliste)
 VALUES (1, 'Nova Plejlista');
 
 INSERT INTO Numera_Plejlista (id_plejliste, id_numere, id_albuma) VALUES (1,1,1);
+INSERT INTO Numera_Plejlista (id_plejliste, id_numere, id_albuma) VALUES (1,2,1);
 
 GO
 
@@ -180,8 +183,14 @@ SELECT * FROM Korisnici
 GO
 
 CREATE VIEW pogled_Umetnici AS
-SELECT Umetnici.id_umetnika, Umetnici.id_korisnika, Korisnici.prikazno_ime_korisnika, Umetnici.ime_umetnika, Korisnici.slika_korisnika
-FROM Umetnici JOIN Korisnici ON Umetnici.id_umetnika = Korisnici.id_korisnika
+SELECT 
+	Umetnici.id_umetnika, 
+	Umetnici.id_korisnika, 
+	Korisnici.prikazno_ime_korisnika, 
+	Umetnici.ime_umetnika, 
+	Korisnici.slika_korisnika
+FROM Umetnici 
+	JOIN Korisnici ON Umetnici.id_umetnika = Korisnici.id_korisnika
 GO
 
 CREATE VIEW pogled_Zanrovi AS
@@ -189,23 +198,63 @@ SELECT * FROM Zanrovi
 GO
 
 CREATE VIEW pogled_Albumi AS
-SELECT Albumi.id_albuma, Albumi.id_umetnika, Albumi.naziv_albuma, Albumi.datum_kreiranja_albuma, Albumi.slika_albuma, Albumi.trajanje_albuma, Albumi.vidljivost_albuma, Albumi.obrisan_album, Umetnici.ime_umetnika
-FROM Albumi JOIN Umetnici ON Albumi.id_umetnika = Umetnici.id_umetnika
+SELECT 
+	Albumi.id_albuma, 
+	Albumi.id_umetnika, 
+	Albumi.naziv_albuma, 
+	Albumi.datum_kreiranja_albuma, 
+	Albumi.slika_albuma, 
+	Albumi.trajanje_albuma, 
+	Albumi.vidljivost_albuma, 
+	Albumi.obrisan_album, 
+	Umetnici.ime_umetnika
+FROM Albumi 
+	JOIN Umetnici ON Albumi.id_umetnika = Umetnici.id_umetnika
 GO
 
 CREATE VIEW pogled_Numere AS
-SELECT Numere.id_numere, Albumi.id_albuma, Umetnici.id_umetnika, Zanrovi.id_zanra, Numere.naziv_numere, Numere.trajanje_numere, Numere.datum_kreiranja_numere, Numere.vidljivost_numere, Numere.obrisana_numera, Numere.lokacija_numere, Zanrovi.naziv_zanra, Umetnici.ime_umetnika
-FROM Numere JOIN Albumi ON Numere.id_albuma = Albumi.id_albuma JOIN Umetnici ON Numere.id_umetnika = Umetnici.id_umetnika JOIN Zanrovi ON Numere.id_zanra = Zanrovi.id_zanra
+SELECT 
+	Numere.id_numere, 
+	Albumi.id_albuma, 
+	Umetnici.id_umetnika, 
+	Zanrovi.id_zanra, 
+	Numere.naziv_numere, 
+	Numere.trajanje_numere, 
+	Numere.datum_kreiranja_numere, 
+	Numere.vidljivost_numere, 
+	Numere.obrisana_numera, 
+	Numere.lokacija_numere, 
+	Zanrovi.naziv_zanra, 
+	Umetnici.ime_umetnika
+FROM Numere 
+	JOIN Albumi ON Numere.id_albuma = Albumi.id_albuma 
+	JOIN Umetnici ON Numere.id_umetnika = Umetnici.id_umetnika 
+	JOIN Zanrovi ON Numere.id_zanra = Zanrovi.id_zanra
 GO
 
 CREATE VIEW pogled_Plejliste AS
-SELECT Plejliste.id_plejliste, Plejliste.id_korisnika, Plejliste.naziv_plejliste, Plejliste.obrisana_plejlista, Plejliste.vidljivost_plejliste, Korisnici.prikazno_ime_korisnika
-FROM Plejliste JOIN Korisnici ON Plejliste.id_korisnika = Korisnici.id_korisnika
+SELECT 
+	Plejliste.id_plejliste, 
+	Plejliste.id_korisnika, 
+	Plejliste.naziv_plejliste, 
+	Plejliste.obrisana_plejlista, 
+	Plejliste.vidljivost_plejliste, 
+	Korisnici.prikazno_ime_korisnika
+FROM Plejliste 
+	JOIN Korisnici ON Plejliste.id_korisnika = Korisnici.id_korisnika
 GO
 
 CREATE VIEW pogled_Istorija AS
-SELECT Istorija.id_istorije, Istorija.id_korisnika, Istorija.id_numere, Istorija.datum_slusanja, Korisnici.prikazno_ime_korisnika, Numere.naziv_numere
-FROM Istorija JOIN Korisnici ON Istorija.id_korisnika = Korisnici.id_korisnika JOIN Numere ON Istorija.id_numere = Numere.id_numere
+SELECT 
+	Istorija.id_istorije, 
+	Istorija.id_korisnika, 
+	Istorija.id_numere, 
+	Istorija.datum_slusanja, 
+	Korisnici.prikazno_ime_korisnika, 
+	Numere.naziv_numere
+FROM Istorija 
+	JOIN Korisnici ON Istorija.id_korisnika = Korisnici.id_korisnika 
+	JOIN Numere ON Istorija.id_numere = Numere.id_numere
 GO
 
 CREATE VIEW pogled_Tekst AS
@@ -213,16 +262,39 @@ SELECT * FROM Tekst
 GO
 
 CREATE VIEW pogled_Interakcije_Korisnika AS
-SELECT Interakcije_Korisnika.id_interakcije, Interakcije_Korisnika.id_korisnika, Interakcije_Korisnika.id_numere, 
-Interakcije_Korisnika.broj_slusanja, Interakcije_Korisnika.broj_pustanja, Interakcije_Korisnika.provedeno_vreme_slusanja, Interakcije_Korisnika.dodato_u_omiljeno, 
-Interakcije_Korisnika.zaustavljeno_vreme, Korisnici.prikazno_ime_korisnika, Numere.naziv_numere
-FROM Interakcije_Korisnika JOIN Korisnici ON Interakcije_Korisnika.id_korisnika = Korisnici.id_korisnika JOIN Numere ON Interakcije_Korisnika.id_numere = Numere.id_numere
+SELECT 
+	Interakcije_Korisnika.id_interakcije, 
+	Interakcije_Korisnika.id_korisnika, 
+	Interakcije_Korisnika.id_numere, 
+	Interakcije_Korisnika.broj_slusanja, 
+	Interakcije_Korisnika.broj_pustanja, 
+	Interakcije_Korisnika.provedeno_vreme_slusanja, 
+	Interakcije_Korisnika.dodato_u_omiljeno, 
+	Interakcije_Korisnika.zaustavljeno_vreme, 
+	Korisnici.prikazno_ime_korisnika, 
+	Numere.naziv_numere
+FROM Interakcije_Korisnika 
+	JOIN Korisnici ON Interakcije_Korisnika.id_korisnika = Korisnici.id_korisnika 
+	JOIN Numere ON Interakcije_Korisnika.id_numere = Numere.id_numere
 GO
 
 CREATE VIEW pogled_Numera_Plejlista AS
-SELECT Numera_Plejlista.id_numere, Numera_Plejlista.id_plejliste, Numera_Plejlista.vreme_dodavanja, Numere.naziv_numere, Plejliste.naziv_plejliste,
-Numere.trajanje_numere, Numere.datum_kreiranja_numere, Numere.lokacija_numere, Albumi.slika_albuma  
-FROM Numera_Plejlista JOIN Numere ON Numera_Plejlista.id_numere = Numere.id_numere JOIN Albumi ON Numera_Plejlista.id_albuma = Albumi.id_albuma JOIN Plejliste ON Numera_Plejlista.id_plejliste = Plejliste.id_plejliste
+SELECT 
+	Numera_Plejlista.id_numere, 
+	Numera_Plejlista.id_plejliste, 
+	Numera_Plejlista.vreme_dodavanja, 
+	Numere.naziv_numere, 
+	Plejliste.naziv_plejliste,
+	Numere.trajanje_numere, 
+	Numere.datum_kreiranja_numere, 
+	Numere.lokacija_numere, 
+	Albumi.slika_albuma, 
+	Numere.obrisana_numera, 
+	Numere.vidljivost_numere
+FROM Numera_Plejlista 
+	JOIN Numere ON Numera_Plejlista.id_numere = Numere.id_numere 
+	JOIN Albumi ON Numera_Plejlista.id_albuma = Albumi.id_albuma 
+	JOIN Plejliste ON Numera_Plejlista.id_plejliste = Plejliste.id_plejliste
 GO
 
 
@@ -277,7 +349,7 @@ BEGIN CATCH
 END CATCH
 END
 GO
-
+----------------------------------------------------------
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -291,7 +363,7 @@ GO
 
 CREATE PROCEDURE InsertujTekst
 	@idNumere INT,
-	@vremePrikazivanja Time(0),
+	@vremePrikazivanja INT,
 	@linijaTeksta NVARCHAR(255)
 	
 AS
@@ -325,7 +397,7 @@ BEGIN CATCH
 END CATCH
 END
 GO
-
+----------------------------------------------------------------------------------------
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -339,7 +411,7 @@ GO
 
 CREATE PROCEDURE InsertujUmetnika
 	@idKorisnika INT,
-	@imeUmetnika NVARCHAR(45),
+	@imeUmetnika NVARCHAR(45)
 	
 AS
 BEGIN
@@ -372,7 +444,96 @@ BEGIN CATCH
 END CATCH
 END
 GO
--- Procedure Albuma
+----------------------------------------------------------------
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--======================================================
+-- Autor: Momcilo Nikolic
+-- Datum kreiranja: 13.8.2023.
+-- Deskripcija: Procedura za kreiranje novih zanrova
+--======================================================
+
+CREATE PROCEDURE InsertujZanr
+	@nazivZanra NVARCHAR(45)
+	
+AS
+BEGIN
+	SET NOCOUNT ON;
+BEGIN TRY
+	DECLARE @zanrPostoji BIT = 0;
+	
+	SELECT @zanrPostoji = 1 FROM Zanrovi
+	WHERE naziv_zanra = @nazivZanra
+
+	IF(@zanrPostoji = 1)
+	BEGIN
+		RAISERROR('Zanr vec postoji!', 16, 1);
+	END
+
+	INSERT INTO Zanrovi (naziv_zanra)
+	VALUES (@nazivZanra);
+END TRY
+BEGIN CATCH
+	DECLARE @ErrorMessage NVARCHAR(2000);
+	DECLARE @ErrorSeverity INT;
+	DECLARE @ErrorState INT;
+
+	SELECT
+		@ErrorMessage = ERROR_MESSAGE(),
+		@ErrorSeverity = ERROR_SEVERITY(),
+		@ErrorState = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+END
+GO
+----------------------------------------------------------------
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--======================================================
+-- Autor: Momcilo Nikolic
+-- Datum kreiranja: 13.8.2023.
+-- Deskripcija: Procedura za brisanje zanra
+--======================================================
+
+CREATE PROCEDURE ObrisiZanr
+	@idZanra INT
+	
+AS
+BEGIN
+	SET NOCOUNT ON;
+BEGIN TRY
+	DECLARE @zanrPostoji BIT = 0;
+	
+	SELECT @zanrPostoji = 1 FROM Zanrovi
+	WHERE id_zanra = @idZanra
+
+	IF(@zanrPostoji = 1)
+	BEGIN
+		DELETE FROM Zanrovi WHERE id_zanra = @idZanra; 
+	END
+END TRY
+BEGIN CATCH
+	DECLARE @ErrorMessage NVARCHAR(2000);
+	DECLARE @ErrorSeverity INT;
+	DECLARE @ErrorState INT;
+
+	SELECT
+		@ErrorMessage = ERROR_MESSAGE(),
+		@ErrorSeverity = ERROR_SEVERITY(),
+		@ErrorState = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+END
+GO
+-- Procedure Albuma --------------------------------------------
 
 SET ANSI_NULLS ON
 GO
@@ -411,7 +572,7 @@ BEGIN CATCH
 END CATCH
 END
 GO
-
+---------------------------------------------------------
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -455,7 +616,7 @@ BEGIN CATCH
 END CATCH
 END
 GO
-
+--------------------------------------------------------
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -499,6 +660,54 @@ BEGIN CATCH
 END CATCH
 END
 GO
+----------------------------------------------------------
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--==================================================================
+-- Autor: Momcilo Nikolic
+-- Datum kreiranja: 13.8.2023.
+-- Deskripcija: Procedura za azuriranje trajanja albuma za umetnika i admina
+--=================================================================
+
+CREATE PROCEDURE AzurirajTrajanjeAlbuma
+	@idAlbuma INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+BEGIN TRY
+	DECLARE @albumPostoji BIT = 0;
+	DECLARE @zbirTrajanjaNumera INT;
+
+	SELECT @albumPostoji = 1 FROM Albumi
+	WHERE id_albuma = @idAlbuma
+
+	SELECT @zbirTrajanjaNumera = SUM(trajanje_numere)
+    FROM Numere WHERE id_albuma = @idAlbuma AND obrisana_numera  = 0;
+
+	IF(@albumPostoji = 1)
+	BEGIN
+		UPDATE Albumi
+		SET trajanje_albuma = @zbirTrajanjaNumera
+		WHERE id_albuma = @idAlbuma
+	END
+END TRY 
+BEGIN CATCH
+	DECLARE @ErrorMessage NVARCHAR(2000);
+	DECLARE @ErrorSeverity INT;
+	DECLARE @ErrorState INT;
+
+	SELECT
+		@ErrorMessage = ERROR_MESSAGE(),
+		@ErrorSeverity = ERROR_SEVERITY(),
+		@ErrorState = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+END
+GO
 
 -- Procedure Numera
 
@@ -518,7 +727,7 @@ CREATE PROCEDURE InsertujNumeru
 	@idAlbuma INT,
 	@idZanra INT,
 	@nazivNumere NVARCHAR(45),
-	@trajanjeNumere TIME(0),
+	@trajanjeNumere INT,
 	@lokacijaNumere NVARCHAR(255)
 	
 AS
@@ -527,6 +736,7 @@ BEGIN
 BEGIN TRY
 	INSERT INTO Numere (id_umetnika, id_albuma, id_zanra, naziv_numere, trajanje_numere, lokacija_numere)
 	VALUES (@idUmetnika, @idAlbuma, @idZanra, @nazivNumere, @trajanjeNumere, @lokacijaNumere);
+	EXEC AzurirajTrajanjeAlbuma @idAlbuma;
 END TRY
 BEGIN CATCH
 	DECLARE @ErrorMessage NVARCHAR(2000);
@@ -542,7 +752,7 @@ BEGIN CATCH
 END CATCH
 END
 GO
-
+----------------------------------------------------------------------
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -586,7 +796,7 @@ BEGIN CATCH
 END CATCH
 END
 GO
-
+-------------------------------------------------------------------------------------
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -613,7 +823,8 @@ BEGIN TRY
 	BEGIN
 		UPDATE Numere
 		SET obrisana_numera = 1
-		WHERE id_numere = @idNumere
+		WHERE id_numere = @idNumere;
+		EXEC AzurirajTrajanjeAlbuma @idAlbuma;
 	END
 END TRY
 BEGIN CATCH
@@ -630,6 +841,246 @@ BEGIN CATCH
 END CATCH
 END
 GO
+
+-- Procedure za Plejlistu
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--======================================================
+-- Autor: Momcilo Nikolic
+-- Datum kreiranja: 13.8.2023.
+-- Deskripcija: Procedura za kreiranje plejliste
+--======================================================
+
+CREATE PROCEDURE InsertujPlejlistu
+	@idKorisnika INT,
+	@nazivPlejliste NVARCHAR(45)
+AS
+BEGIN
+	SET NOCOUNT ON;
+BEGIN TRY
+	INSERT INTO Plejliste (id_korisnika, naziv_plejliste)
+	VALUES (@idKorisnika, @nazivPlejliste);
+END TRY
+BEGIN CATCH
+	DECLARE @ErrorMessage NVARCHAR(2000);
+	DECLARE @ErrorSeverity INT;
+	DECLARE @ErrorState INT;
+
+	SELECT
+		@ErrorMessage = ERROR_MESSAGE(),
+		@ErrorSeverity = ERROR_SEVERITY(),
+		@ErrorState = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+END
+GO
+-----------------------------------------------------------------------------
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--======================================================
+-- Autor: Momcilo Nikolic
+-- Datum kreiranja: 13.8.2023.
+-- Deskripcija: Procedura za promenu vidljivosti plejliste 
+--======================================================
+
+CREATE PROCEDURE PromeniVidljivostPlejliste
+	@idPlejliste INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+BEGIN TRY
+	DECLARE @plejlistaPostoji BIT = 0;
+
+	SELECT @plejlistaPostoji = 1 FROM Plejliste
+	WHERE id_plejliste = @idPlejliste
+
+	IF(@plejlistaPostoji = 1)
+	BEGIN
+		UPDATE Plejliste
+		SET vidljivost_plejliste =  CASE WHEN vidljivost_plejliste = 0 THEN 1 ELSE 0 END
+		WHERE id_plejliste = @idPlejliste
+	END
+END TRY 
+BEGIN CATCH
+	DECLARE @ErrorMessage NVARCHAR(2000);
+	DECLARE @ErrorSeverity INT;
+	DECLARE @ErrorState INT;
+
+	SELECT
+		@ErrorMessage = ERROR_MESSAGE(),
+		@ErrorSeverity = ERROR_SEVERITY(),
+		@ErrorState = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+END
+GO
+----------------------------------------------------------------------
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--======================================================
+-- Autor: Momcilo Nikolic
+-- Datum kreiranja: 13.8.2023.
+-- Deskripcija: Procedura za azuriranje trajanja plejliste 
+--======================================================
+
+CREATE PROCEDURE AzurirajTrajanjePlejliste
+	@idPlejliste INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+BEGIN TRY
+	DECLARE @plejlistaPostoji BIT = 0;
+	DECLARE @zbirTrajanjaNumera INT;
+
+	SELECT @plejlistaPostoji = 1 FROM Plejliste
+	WHERE id_plejliste = @idPlejliste
+
+	SELECT @zbirTrajanjaNumera = SUM(trajanje_numere)
+    FROM pogled_Numera_Plejlista WHERE id_plejliste = @idPlejliste AND obrisana_numera = 0 AND vidljivost_numere = 1; 
+
+
+	IF(@plejlistaPostoji = 1)
+	BEGIN
+		UPDATE Plejliste
+		SET trajanje_plejliste = @zbirTrajanjaNumera
+		WHERE id_plejliste = @idPlejliste
+	END
+END TRY 
+BEGIN CATCH
+	DECLARE @ErrorMessage NVARCHAR(2000);
+	DECLARE @ErrorSeverity INT;
+	DECLARE @ErrorState INT;
+
+	SELECT
+		@ErrorMessage = ERROR_MESSAGE(),
+		@ErrorSeverity = ERROR_SEVERITY(),
+		@ErrorState = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+END
+GO
+---------------------------------------------------------------------
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--======================================================
+-- Autor: Momcilo Nikolic
+-- Datum kreiranja: 13.8.2023.
+-- Deskripcija: Procedura za postavljanje plejliste kao izbrisanu
+--======================================================
+
+CREATE PROCEDURE PostaviPlejlistuKaoIzbrisanu
+	@idPlejliste INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+BEGIN TRY
+	DECLARE @plejlistaPostoji BIT = 0;
+
+	SELECT @plejlistaPostoji = 1 FROM Plejliste
+	WHERE id_plejliste = @idPlejliste 
+
+	IF(@plejlistaPostoji = 1)
+	BEGIN
+		UPDATE Plejliste
+		SET obrisana_plejlista = 1
+		WHERE id_plejliste = @idPlejliste;
+	END
+END TRY
+BEGIN CATCH
+	DECLARE @ErrorMessage NVARCHAR(2000);
+	DECLARE @ErrorSeverity INT;
+	DECLARE @ErrorState INT;
+
+	SELECT
+		@ErrorMessage = ERROR_MESSAGE(),
+		@ErrorSeverity = ERROR_SEVERITY(),
+		@ErrorState = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+END
+GO
+
+-- Procedure za numere u plejlisti
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+--======================================================
+-- Autor: Momcilo Nikolic
+-- Datum kreiranja: 13.8.2023.
+-- Deskripcija: Procedura za kreiranje plejliste
+--======================================================
+
+CREATE PROCEDURE DodajNumeruUPlejlistu
+	@idPlejliste INT,
+	@idNumere INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+BEGIN TRY
+	DECLARE @plejlistaPostoji BIT = 0;
+	DECLARE @numeraPostoji BIT = 0;
+
+	SELECT @plejlistaPostoji = 1 FROM Plejliste
+	WHERE id_plejliste = @idPlejliste;
+
+	IF(@plejlistaPostoji = 0)
+	BEGIN
+		RAISERROR('Plejlista ne postoji!', 16, 1);
+	END
+
+	SELECT @numeraPostoji = 1 FROM Numere
+	WHERE id_numere = @idNumere;
+
+	IF(@numeraPostoji = 0)
+	BEGIN
+		RAISERROR('Numera ne postoji!', 16, 1);
+	END
+
+	DECLARE @idAlbuma INT;
+
+	SELECT @idAlbuma = id_albuma FROM Numere
+	WHERE id_numere = @id_numere;
+	
+	INSERT INTO Plejliste (id_korisnika, naziv_plejliste)
+	VALUES (@idKorisnika, @nazivPlejliste);
+
+	AzurirajTrajanjePlejliste @idPlejliste;
+END TRY
+BEGIN CATCH
+	DECLARE @ErrorMessage NVARCHAR(2000);
+	DECLARE @ErrorSeverity INT;
+	DECLARE @ErrorState INT;
+
+	SELECT
+		@ErrorMessage = ERROR_MESSAGE(),
+		@ErrorSeverity = ERROR_SEVERITY(),
+		@ErrorState = ERROR_STATE();
+
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+END
+GO
+-----------------------------------------------------------------------------
+
 
 -- Procedure za Interakciju Korisnika -----------------------------------------------
 
@@ -706,7 +1157,7 @@ END CATCH
 END
 GO
 
-
+--------------------------------------------------------------
 
 SET ANSI_NULLS ON
 GO
@@ -773,7 +1224,7 @@ BEGIN CATCH
 END CATCH
 END
 GO
-
+----------------------------------------------------------------------
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -788,7 +1239,7 @@ GO
 CREATE PROCEDURE InterakcijaProvedenoVremeSlusanja
 	@idKorisnika INT,
 	@idNumere INT,
-	@provedenoVremeUSekundama INT
+	@provedenoVremeSlusanja INT
 
 AS
 BEGIN
@@ -821,7 +1272,7 @@ BEGIN TRY
 	IF(@tabelaPostoji = 1)
 	BEGIN
 		UPDATE Interakcije_Korisnika
-		SET provedeno_vreme_slusanja = DATEADD(SECOND, @provedenoVremeUSekundama, provedeno_vreme_slusanja)
+		SET provedeno_vreme_slusanja = provedeno_vreme_slusanja + @provedenoVremeSlusanja
 		WHERE id_korisnika = @idKorisnika AND id_numere = @idNumere;
 	END	
 
@@ -840,7 +1291,7 @@ BEGIN CATCH
 END CATCH
 END
 GO
-
+-------------------------------------------------------------------
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -849,7 +1300,7 @@ GO
 --=================================================================================================
 -- Autor: Momcilo Nikolic
 -- Datum kreiranja: 11.8.2023.
--- Deskripcija: Procedura za kreiranje ili apdejtovanje korisnicke interakcije dovavanja u omiljeno
+-- Deskripcija: Procedura za kreiranje ili apdejtovanje korisnicke interakcije dodavanja u omiljeno
 --=================================================================================================
 
 CREATE PROCEDURE InterakcijaOmiljeno
@@ -914,7 +1365,7 @@ BEGIN CATCH
 END CATCH
 END
 GO
-
+-------------------------------------------------------------------
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -929,7 +1380,7 @@ GO
 CREATE PROCEDURE InterakcijaZaustavljenoVreme
 	@idKorisnika INT,
 	@idNumere INT,
-	@pauziranoVreme TIME(0)
+	@pauziranoVreme INT
 
 AS
 BEGIN
