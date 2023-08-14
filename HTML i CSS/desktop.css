@@ -1,0 +1,40 @@
+/* Desktop */
+@media only screen and (min-width: 768px) {
+    body {
+        font-size: 18px; /* Increase font size for larger screens */
+    }
+
+    .levi_meni
+    {
+        padding-top: 10px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        
+    }
+
+    .desni_meni
+    {
+        width: 100%;
+        margin-left: 300px;
+        padding-inline: 40px;
+        
+    }
+
+    .kontent
+    {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .icon_menu
+    {
+        display: none;
+    }
+
+    .muzicki_plejer
+    {
+        left: 300px;
+    }
+}

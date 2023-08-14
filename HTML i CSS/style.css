@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,800&display=swap');
+
+:root {
+    --pozadinaPlava: linear-gradient(180deg, #05366F 0%, #020610 100%);
+    --pozadinaPlava90deg: linear-gradient(90deg, #164299 0%, rgba(26,93,175,0.00) 100%);
+    --pozadinaCrvena: linear-gradient(180deg, #d73030 0%, #020610 100%);
+    --pozadinaLjubicasta360: linear-gradient(360deg, #562222 0%, #332256 0.01%, rgba(0,0,0,0.00) 100%);
+    --pozadinaLjubicasta180: linear-gradient(180deg, rgba(64, 38, 120, 0.81) 4.17%, rgba(64, 38, 120, 0.81) 100%);
+    --crna: #020712;
+    --bela: #f2f2f2;
+    --svetloCrna: #0c0c0d;
+    --tamnoBela: #f2f2f2;
+    --ljubicasta: #6D4BC0;
+    --tamnoLjubivasta: #4E32BF;
+    --svetloPlava: #A8B1FF;
+
+}
+
+*
+{
+    margin: 0px;
+    padding: 0px;
+    font-family: 'DM Sans', sans-serif;
+    color: white;
+}
+
+body
+{
+    background: var(--pozadinaPlava); /* Change background color for mobile */
+    background-repeat: no-repeat;
+    height: 100vh;
+    display: flex;
+}
+
+.levi_meni
+{
+    background-color: var(--crna);
+    width: 280px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.desni_meni
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.icon_playArrow, .icon_skipNext, .icon_prevArrow
+{
+    font-size: 45px;
+}
+
+.icon_laps, .icon_shuffle
+{
+    vertical-align:super;
+    font-size: 30px;
+}
+
+.icon_volume, .icon_omiljeno
+{
+    font-size: 30px;
+}
+
+
+.icon_omiljeno
+{
+    font-size: 32px;
+    margin-left: 24px;
+    vertical-align: super;
+}
+
+.icon_tekst
+{
+    margin-left: 10px;
+}
+
+.muzicki_plejer
+{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    height: 65px;
+    background-color: var(--svetloCrna);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 8px;
+}
+
+.kontrole_zvuka
+{
+    display: flex;
+    align-items: center;
+}
+
+.space_div
+{
+    background-color: var(--pozadinaLjubicasta360);
+    
+    width: auto;
+    height: 800px;
+    display: flex;
+    align-items: center;
+}
+
+.volume_bar
+{
+    margin-left: 5px;
+    width: 150px;
+    height: 5px;
+    background-color: var(--bela);
+    border-radius: 100px;
+}
+
+.slika_numere
+{
+    width: 50px;
+    border-radius: 3px;
+}
+
+.info_numerePlejera
+{
+    display: flex;
+    flex-direction: column;
+    margin-left: 8px;
+    
+}
+
+.ime_umetnika
+{
+    font-size: 12px;
+}
+
+.plejer_progres
+{
+    position: fixed;
+    bottom: 0;
+    height: 8px;
+    left: 300px;
+    
+    width: 100%;
+    background-color: var(--bela);
+    margin-bottom: 65px;
+}
+
+.plejer_progres_linija
+{
+    position: fixed;
+    bottom: 0;
+    height: 8px;
+    left: 300px;
+    
+    width: 50%;
+    background-color: var(--tamnoLjubivasta);
+    margin-bottom: 65px;
+    
+}

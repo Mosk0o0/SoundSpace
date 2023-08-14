@@ -1,0 +1,53 @@
+/* Mobilni */
+@media only screen and (max-width: 480px) {
+    body {
+        background: var(--pozadinaCrvena);
+        background-repeat: no-repeat;
+        font-size: 12px;
+        height: 200vh; 
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .levi_meni
+    {
+        box-sizing: border-box;
+        width: 100%;
+        height: 65px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        position: fixed;
+    }
+
+    .desni_meni
+    {
+        margin-top: 65px;
+        height: 100%;
+        
+    }
+
+    .kontent
+    {
+        padding-inline: 15px;
+        padding-top: 15px;
+    }
+
+    .icon_menu
+    {
+        font-size: 40px;
+    }
+
+   .icon_shuffle, .icon_prevArrow, .icon_skipNext, .icon_laps, .kontrole_zvuka
+   {
+        display: none;
+   }
+
+   .naziv_numere
+   {
+     font-size: 18px;
+   }
+
+}
