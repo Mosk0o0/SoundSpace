@@ -7,21 +7,48 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="mobilni.css">
     <link rel="stylesheet" href="desktop.css">
-    <title>Document</title>
+    <title>SOUNDSPACE</title>
 </head>
 <body>
     
     <div class="levi_meni">
         <h1 class="logo">SOUNDSPACE</h1>
         <span class="material-symbols-rounded icon_menu">menu</span>
+        <div class="meni_buttons">
+            <div class="dugme">
+                <img class="slika_dugme" src="OIP.jpg" alt="">
+                <div class="dugme_info">
+                    <h3 class="dugme_tekst">Tekst dugmeta</h3>
+                    <p class="dugme_podtekst">Podtekst</p>
+                </div>
+            </div>
+            <div class="dugme">
+                <img class="slika_dugme" src="OIP.jpg" alt="">
+                <div class="dugme_info">
+                    <h3 class="dugme_tekst">Tekst dugmeta</h3>
+                    <p class="dugme_podtekst">Podtekst</p>
+                </div>
+            </div>
+            <div class="dugme">
+                <img class="slika_dugme" src="OIP.jpg" alt="">
+                <div class="dugme_info">
+                    <h3 class="dugme_tekst">Tekst dugmeta</h3>
+                    <p class="dugme_podtekst">Podtekst</p>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="desni_meni">
        <div class="kontent">
         <h1>Hello World</h1>
        </div>
-       <div class="plejer_progres">
+       <div class="plejer_progres" data-progres="100">
         <div class="plejer_progres_linija">
-        
+            
+        </div>
+        <div class="intervali">
+            <p>00:00</p>    
+            <p>02:35</p>    
         </div>
        </div>
         <div class="muzicki_plejer">
@@ -43,7 +70,10 @@
             </div>
             <div class="kontrole_zvuka">
                 <span class="material-symbols-rounded icon_volume">volume_up</span>
-                <div class="volume_bar"></div>
+                <div class="volume_bar">
+                    <div class="volume_level"></div>
+                </div>
+                
             </div>
         </div>
     </div>

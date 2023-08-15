@@ -18,7 +18,7 @@
     {
         width: 100%;
         margin-left: 300px;
-        padding-inline: 40px;
+        
         
     }
 
@@ -26,6 +26,7 @@
     {
         padding-top: 10px;
         padding-bottom: 10px;
+        padding-inline: 40px;
     }
 
     .icon_menu
@@ -37,4 +38,57 @@
     {
         left: 300px;
     }
+
+    .kontrole_plejera
+    {
+        margin-right: 98px;
+    }
+
+  
+.plejer_progres
+{
+    background-color: var(--bela);
+    position: fixed;
+    height: 8px;
+    left: 300px;
+    right: 0;    
+    bottom: 0;
+    margin-bottom: 65px;
+}
+
+.plejer_progres_linija
+{
+    background-color: var(--ljubicasta);
+    height: 8px;
+    position:relative;
+    width: var(--procenatPlejerTrake);
+    
+    
+    
+}
+
+.intervali
+{
+    position: relative;
+    bottom: 28px;
+    display: flex;
+    justify-content: space-between;
+    margin-inline: 2.5px;
+    font-size: 12px;
+}
+
+.meni_buttons
+{
+    height: 95%;
+    overflow: scroll;
+    overflow-x: hidden;
+    padding-bottom: 20px;
+    scrollbar-width: none;
+    -ms-overflow-style: none; 
+}
+
+.meni_buttons::-webkit-scrollbar {
+    width: 0; /* Hide default scrollbar for WebKit browsers */
+}
+
 }

@@ -50,4 +50,54 @@
      font-size: 18px;
    }
 
+   .plejer_progres
+{
+    background-color: var(--bela);
+    position: fixed;
+    height: 5px;
+    left: 0;
+    right: 0;    
+    bottom: 0;
+    margin-bottom: 65px;
 }
+
+.plejer_progres_linija
+{
+    background-color: var(--ljubicasta);
+    height: 8px;
+    position:relative;
+    width: var(--procenatPlejerTrake);
+    
+    
+    
+}
+
+.intervali
+{
+    position: relative;
+    bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    margin-inline: 4px;
+    font-size: 10px;
+}
+
+    .meni_buttons
+    {
+        background-color: var(--crna);
+        width: 100%;
+        max-height: 72.4vh;
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 65px;
+        padding-bottom: 10px;
+        overflow:scroll;
+    }
+
+}
+
+
+
+
+
