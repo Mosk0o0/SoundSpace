@@ -24,7 +24,7 @@
 
     .kontent
     {
-        padding-top: 10px;
+        padding-top: 20px;
         padding-bottom: 10px;
         padding-inline: 40px;
     }
@@ -90,5 +90,8 @@
 .meni_buttons::-webkit-scrollbar {
     width: 0; /* Hide default scrollbar for WebKit browsers */
 }
+
+
+
 
 }

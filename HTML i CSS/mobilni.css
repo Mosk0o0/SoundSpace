@@ -20,6 +20,7 @@
         align-items: center;
         justify-content: space-between;
         position: fixed;
+        z-index: 5;
     }
 
     .desni_meni
@@ -94,6 +95,112 @@
         padding-bottom: 10px;
         overflow:scroll;
     }
+
+    .tekstHolder
+{
+    font-family: 'Nunito', sans-serif;
+    position: fixed;
+    background: var(--pozadinaLjubicasta180);
+    width: 90vw;
+    height: 67vh;
+    align-self: center;
+    margin-top: 10px;
+    border-radius: 15px;
+    font-size: 20px;
+    line-height: 38px;
+    font-weight: 900;
+}
+
+.album_slika
+{
+    width: 15vh;
+    height: 15vh;
+}
+
+.album_info
+{
+    margin-left: 8px;
+}
+
+.album_naslov h1
+{
+    font-size: 3.5vh;
+    margin-bottom: 2.5vh;
+    align-self: center;
+}
+
+.tabela_naziv img
+{
+    width: 5.5vh;
+    height: 5.5vh;
+}
+
+.datum_duzina
+{
+    font-size: 1.1vh;
+    display: none;
+    
+}
+
+.tabela_naziv h2
+{
+    font-size: 2vh;
+    padding-top: 8.5px;
+    
+}
+
+.tabela_naziv p 
+{
+    font-size: 1.2vh;
+}
+
+.endAl, .album_th
+{
+    display: none;
+}
+
+.numere_wraper
+{
+    overflow:unset;
+    background: none;
+    box-shadow: none;
+}
+
+.broj_numere
+{
+    font-size: 2vh;
+    width: 5vh;
+}
+
+.numera_meni
+{
+    background: var(--pozadinaLjubicasta180);
+    border-radius: 5px;
+}
+
+.pretraga_numera input
+{
+    width: 38vw;
+    color: var(--crna);
+    padding-left: 10px;
+    padding-right: 38px;
+}
+
+.sortiranje select 
+{
+    width: 25vw;
+}
+
+
+.tekstHolder p
+{
+    font-size: 3vh;
+    width: 70vw;
+    margin-bottom: 10px;
+}
+
+
+
 
 }
 
